@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "giteasy"
+version = "1.0"
+authors = [{ name = "Mahdi Mir", email = "imahdimir@gmail.com" }]
+description = "A simple tool to get last/full version of a github repository and committing back to it"
+readme = "README.md"
+license = { file = "LICENSE" }
+dependencies = [
+    "dulwich",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Localization",
+    "Topic :: Utilities"]
+keywords = [
+]
+
+[project.urls]
+"Homepage" = "https://github.com/imahdimir/giteasy"
+"Bug Tracker" = "https://github.com/imahdimir/giteasy/issues"

@@ -56,7 +56,7 @@ class Repo :
     def _stage_all_changes(self) :
         idx = self._repo.open_index()
 
-        lp = self.local_path
+        lp = str(self.local_path) + '/'
         fu = porcelain.get_untracked_paths
         untracked = fu(lp , lp , idx , exclude_ignored = True)
 
@@ -65,6 +65,7 @@ class Repo :
         all_changes = list(unstaged) + list(untracked)
 
         self._repo.stage(all_changes)
+        return all_changes
 
     def _input_cred_usr_tok(self) :
         usr = input('(enter nothing for same as repo source) github username: ')

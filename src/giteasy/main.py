@@ -99,14 +99,14 @@ class Repo :
         tr = self.user_repo
         self._clone_url = github_url_wt_credentials(usr , tok , tr)
 
-    def overwriting_clone(self , depth = 1) :
+    def overwriting_clone(self , overwrite = True , depth = 1) :
         """ Every time excecuted, it re-downloads last version of the reposiroty to local_path.
 
         param depth: None for full depth, default = 1 (last version)
         return: None
         """
         trgdir = self.local_path
-        if trgdir.exists() :
+        if trgdir.exists() and overwrite :
             self.rmdir()
 
         try :

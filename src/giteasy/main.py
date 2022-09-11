@@ -45,7 +45,7 @@ class Repo :
         if local_dir is None :
             self._local_path = Path(self.repo_name)
         else :
-            self._local_path = Path(local_dir) / self.repo_name
+            self._local_path = Path(local_dir)
 
         if self._local_path.exists() :
             print('Warning: local_path already exists')

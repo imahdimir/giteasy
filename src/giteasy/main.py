@@ -18,7 +18,7 @@ class Repo :
         self.source_url = source_url
         self._usr_tok_jsp = user_token_json_path
 
-        self.cln_src_url = cln_github_url(source_url)
+        self.cln_src_url = clean_github_url(source_url)
         self.user_repo = self.cln_src_url.split(github_base_url)[1]
         self.user_name = self.user_repo.split('/')[0]
         self.repo_name = self.user_repo.split('/')[1]
@@ -137,7 +137,7 @@ class Repo :
     def rmdir(self) :
         shutil.rmtree(self._local_path)
 
-def cln_github_url(github_repo_url) :
+def clean_github_url(github_repo_url) :
     inp = github_repo_url
 
     inp = inp.replace(github_base_url , '')

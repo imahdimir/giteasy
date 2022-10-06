@@ -1,6 +1,6 @@
 """
 
-"""
+    """
 
 from pathlib import Path
 
@@ -59,3 +59,25 @@ def get_all_files_in_github_repo(github_repo , sha = None , recursive = True) :
         sha = repo.get_branch(br).commit.sha
 
     return repo.get_git_tree(sha = sha , recursive = recursive).tree
+
+def add_new_txt_based_files_fr_dir_to_github_repo(dir , file_suf , repo_name) :
+    fps = list(Path(dir).glob('*'))
+    fps = [fp for fp in fps if fp.suffix == file_suf]
+    print(len(fps))
+
+    getf = get_all_files_in_github_repo
+    ofps = getf(repo_name)
+    print(len(ofps))
+
+    ofps = [Path(x.path) for x in ofps]
+    ofps = [x.stem for x in ofps if x.suffix == file_suf]
+    print(len(ofps))
+
+    stms = [x.stem for x in fps]
+    nstms = set(stms) - set(ofps)
+    print(len(nstms))
+
+    addf = add_txt_based_file_to_github_repo
+    for st in nstms :
+        fp = Path(dir) / f'{st}.html'
+        addf(fp , repo_name)

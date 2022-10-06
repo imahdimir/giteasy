@@ -14,7 +14,7 @@ from dulwich.client import HTTPUnauthorized
 
 class Consts :
     tr = 'https://raw.github.com/imahdimir/github-token-path/main/pth.json'
-    gbu = 'https://github.com/'
+    gi = 'https://github.com/'
 
 cte = Consts()
 
@@ -24,7 +24,7 @@ class Repo :
         self._usr_tok_jsp = user_token_json_path
 
         self.cln_src_url = clean_github_url(source_url)
-        self.user_repo = self.cln_src_url.split(cte.gbu)[1]
+        self.user_repo = self.cln_src_url.split(cte.gi)[1]
         self.user_name = self.user_repo.split('/')[0]
         self.repo_name = self.user_repo.split('/')[1]
 
@@ -145,7 +145,7 @@ class Repo :
 def clean_github_url(github_repo_url) :
     inp = github_repo_url
 
-    inp = inp.replace(cte.gbu , '')
+    inp = inp.replace(cte.gi , '')
 
     spl = inp.split('/' , )
     spl = spl[:2]
@@ -153,7 +153,7 @@ def clean_github_url(github_repo_url) :
     urp = '/'.join(spl)
     urp = urp.split('#')[0]
 
-    url = cte.gbu + urp
+    url = cte.gi + urp
     return url
 
 def github_url_wt_credentials(user , token , targ_repo) :
@@ -195,3 +195,5 @@ def add_txt_file_to_github_repo(file_path ,
     with open(file_path , 'r') as fi :
         cont = fi.read()
         repo.create_file(path_in_repo , msg , cont , branch = branch)
+        
+    print(f'file {path_in_repo} added to {github_repo}')

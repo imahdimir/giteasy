@@ -40,7 +40,7 @@ def add_txt_based_file_to_github_repo(file_path ,
 
     print(f'file {path_in_repo} added to {rpn}')
 
-def get_all_files_in_github_repo(github_repo) :
+def get_all_files_in_github_repo(github_repo , sha = None , recursive = True) :
     """ Get all files in a GitHub repository. """
     rp = Repo(github_repo)
     rpn = rp.user_repo
@@ -54,4 +54,8 @@ def get_all_files_in_github_repo(github_repo) :
     g = Github(tok)
     repo = g.get_repo(rpn)
 
-    return repo.get_git_tree(recursive = True).tree
+    if not sha :
+        br = repo.default_branch
+        sha = repo.get_branch(br).commit.sha
+
+    return repo.get_git_tree(sha = sha , recursive = recursive).tree

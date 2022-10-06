@@ -170,30 +170,3 @@ def get_github_token_json_fp() :
     for fp in js.values() :
         if Path(fp).exists() :
             return fp
-
-def add_txt_file_to_github_repo(file_path ,
-                                github_repo ,
-                                path_in_repo = None ,
-                                msg = None ,
-                                branch = 'main') :
-    from github import Github
-
-    fp = get_github_token_json_fp()
-    if fp :
-        _ , tok = get_usr_tok_fr_json_file(fp)
-    else :
-        tok = input('enter github access token:')
-
-    g = Github(tok)
-    repo = g.get_repo(github_repo)
-
-    if path_in_repo is None :
-        path_in_repo = Path(file_path).name
-    if msg is None :
-        msg = f'added {path_in_repo}'
-
-    with open(file_path , 'r') as fi :
-        cont = fi.read()
-        repo.create_file(path_in_repo , msg , cont , branch = branch)
-        
-    print(f'file {path_in_repo} added to {github_repo}')

@@ -2,8 +2,8 @@
 
   """
 
-from src.giteasy.main import get_github_token_json_fp
-from src.giteasy.main import Repo
+from src.giteasy.repo import get_github_token_json_fp
+from src.giteasy.repo import Repo
 
 
 ## test get_github_token_pathes()

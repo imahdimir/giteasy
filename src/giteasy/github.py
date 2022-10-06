@@ -60,8 +60,8 @@ def get_all_files_in_github_repo(github_repo , sha = None , recursive = True) :
 
     return repo.get_git_tree(sha = sha , recursive = recursive).tree
 
-def add_new_txt_based_files_fr_dir_to_github_repo(dir , file_suf , repo_name) :
-    fps = list(Path(dir).glob('*'))
+def add_new_txt_based_files_fr_dir_to_github_repo(dir_ , file_suf , repo_name) :
+    fps = list(Path(dir_).glob('*'))
     fps = [fp for fp in fps if fp.suffix == file_suf]
     print(len(fps))
 
@@ -79,5 +79,5 @@ def add_new_txt_based_files_fr_dir_to_github_repo(dir , file_suf , repo_name) :
 
     addf = add_txt_based_file_to_github_repo
     for st in nstms :
-        fp = Path(dir) / f'{st}.html'
+        fp = Path(dir_) / f'{st}.html'
         addf(fp , repo_name)

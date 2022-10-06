@@ -54,6 +54,4 @@ def get_all_files_in_github_repo(github_repo) :
     g = Github(tok)
     repo = g.get_repo(rpn)
 
-    return repo.get_contents('')
-
-##
+    return repo.get_git_tree(recursive = True).tree

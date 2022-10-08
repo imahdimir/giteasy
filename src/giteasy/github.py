@@ -128,20 +128,20 @@ async def add_xor_overwrite_txt_based_files_2_github_repo_async(fps ,
 
 def _find_stems_fr_dir_not_in_repo(dir_ , file_suf , pygithub_github_obj) :
     fps = list(Path(dir_).glob(f'*.{file_suf}'))
-    print(f'all files in dir count: {len(fps)}')
+    print(f'{file_suf} files count in {dir_}:  {len(fps)}')
 
     rp = pygithub_github_obj
     getf = _get_all_fps_in_github_repo
     ofps = getf(rp)
-    print(f'all files in the repo count: {len(ofps)}')
+    print(f'all files count in {rp.full_name}:  {len(ofps)}')
 
     ofps = [Path(x.path) for x in ofps]
-    ofps = [x.stem for x in ofps if x.suffix == file_suf]
-    print(f'all files in the repo with suff {file_suf} count: {len(ofps)}')
+    ofps = [x.stem for x in ofps if x.suffix == f'.{file_suf}']
+    print(f'{file_suf} files count in {rp.full_name}:  {len(ofps)}')
 
     stms = [x.stem for x in fps]
     nstms = set(stms) - set(ofps)
-    print(f'new files count: {len(nstms)}')
+    print(f'new files count:  {len(nstms)}')
 
     return nstms
 

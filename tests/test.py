@@ -10,7 +10,7 @@ importlib.reload(sgi)
 
 from src.giteasy.repo import get_github_token_json_fp
 from src.giteasy.repo import Repo
-from src.giteasy.github import ret_pygithub_github_obj , get_all_fps_in_github_repo
+from src.giteasy.github import ret_pygithub_github_obj , get_all_fps_in_repo
 
 
 ## test get_github_token_pathes()
@@ -39,7 +39,7 @@ rp.rmdir()
 ##
 rp = 'https://github.com/imahdimir/Codal-monthly-sales-htmls'
 ob = ret_pygithub_github_obj(rp)
-x = get_all_fps_in_github_repo(rp)
+x = get_all_fps_in_repo(rp)
 print(x)
 print(len(x))
 
@@ -60,5 +60,13 @@ rp = 'https://github.com/imahdimir/td-u-d0-FirmTicker-MonthlySales'
 di = '/Users/mahdi/Dropbox/1-git-dirs/PyCharm/u-d0-FirmTicker-MonthlySales/link-htmls'
 fu = add_txt_based_files_fr_dir_to_github_repo_async
 asyncio.run(fu(di , 'html' , rp))
+
+##
+rp = 'https://github.com/imahdimir/td-u-d0-FirmTicker-MonthlySales'
+ob = ret_pygithub_github_obj(rp)
+fp = '/Users/mahdi/Downloads/pr.py'
+with open(fp , 'rb') as f :
+    content = f.read()
+ob.create_file('1.py' , 'test commit' , content)
 
 ##

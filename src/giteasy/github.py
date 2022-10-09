@@ -150,3 +150,25 @@ def add_overwrite_files_by_suf_fr_dir_2_repo(dirpath ,
         fns = fu1(dirpath , file_suf , rp)
         fps = [_dir / x for x in fns]
         _ = [fu(x , rp) for x in fps]
+
+
+def ret_fps_pygithub_repo_inst_for_multiprocess(dirpath ,
+                                                file_suf ,
+                                                repo_url ,
+                                                overwrite = False) :
+    ur = ret_usr_repo_from_repo_url(repo_url)
+    rp = ret_pygithub_repo_obj(ur)
+
+    _dir = Path(dirpath)
+
+    if overwrite :
+        fps = list(_dir.glob(f'*.{file_suf}'))
+    else :
+        fu1 = _find_new_files_fr_dir_not_in_repo_by_suf
+        fns = fu1(dirpath , file_suf , rp)
+        fps = [_dir / x for x in fns]
+
+    return {
+            'fps'           : fps ,
+            'pygithub.repo' : rp
+            }

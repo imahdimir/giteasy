@@ -6,7 +6,7 @@ import asyncio
 from pathlib import Path
 
 from src.giteasy.funcs import get_token
-from src.giteasy.github import ret_usr_repo_from_repo_url
+from src.giteasy.githubb import ret_usr_repo_from_repo_url
 from src.giteasy.github_async import add_overwrite_a_file_2_repo_async
 from src.giteasy.github_async import add_overwrite_files_2_repo_async
 from src.giteasy.github_async import get_rare_limit

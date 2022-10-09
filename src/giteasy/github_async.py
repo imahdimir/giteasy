@@ -14,9 +14,9 @@ import ujson
 from gidgethub.aiohttp import GitHubAPI
 
 from .funcs import get_token
-from .github import _get_all_fps_in_repo
-from .github import ret_pygithub_repo_obj
-from .github import ret_usr_repo_from_repo_url
+from .githubb import _get_all_fps_in_repo
+from .githubb import ret_pygithub_repo_obj
+from .githubb import ret_usr_repo_from_repo_url
 
 
 nest_asyncio.apply()

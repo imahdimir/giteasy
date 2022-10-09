@@ -11,7 +11,7 @@ importlib.reload(sgi)
 
 from src.giteasy.repo import get_github_token_json_fp
 from src.giteasy.repo import Repo
-from src.giteasy.github import ret_pygithub_repo_obj , get_all_fps_in_repo
+from src.giteasy.githubb import ret_pygithub_repo_obj , get_all_fps_in_repo
 
 
 ## test get_github_token_pathes()

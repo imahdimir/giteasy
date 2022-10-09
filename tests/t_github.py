@@ -4,9 +4,9 @@
 
 from pathlib import Path
 
-from src.giteasy.github import add_overwrite_a_file_2_repo
-from src.giteasy.github import ret_pygithub_repo_obj
-from src.giteasy.github import ret_fps_pygithub_repo_inst_for_multiprocess
+from src.giteasy.githubb import add_overwrite_a_file_2_repo
+from src.giteasy.githubb import ret_pygithub_repo_obj
+from src.giteasy.githubb import ret_fps_pygithub_repo_inst_for_multiprocess
 
 
 ##

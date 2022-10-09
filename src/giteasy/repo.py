@@ -2,26 +2,26 @@
 
     """
 
-import json
 import shutil
 from pathlib import Path
 
-import requests
 from dulwich import index
 from dulwich import porcelain
 from dulwich.client import HTTPUnauthorized
 
+from .consts import Consts
+from .funcs import clean_github_url
+from .funcs import get_github_token_json_fp
+from .funcs import get_usr_tok_fr_json_file
+from .funcs import github_url_wt_credentials
 
-class Consts :
-    tr = 'https://raw.github.com/imahdimir/github-token-path/main/pth.json'
-    gi = 'https://github.com/'
 
 cte = Consts()
 
 class Repo :
-    def __init__(self , source_url , user_token_json_path = None) :
+    def __init__(self , source_url , usr_tok_json_fp = None) :
         self.source_url = source_url
-        self._usr_tok_jsp = user_token_json_path
+        self._ut_jsfp = usr_tok_json_fp
 
         self.cln_src_url = clean_github_url(source_url)
         self.user_repo = self.cln_src_url.split(cte.gi)[1]
@@ -32,8 +32,8 @@ class Repo :
 
         self._clone_url = None
 
-        self._cred_usr = None
-        self._cred_tok = None
+        self._crd_usr = None
+        self._crd_tok = None
 
         self._commit_url = None
 
@@ -75,32 +75,32 @@ class Repo :
     def _input_cred_usr_tok(self) :
         usr = input('(enter nothing for same as repo source) github username: ')
         if usr.strip() == '' :
-            self._cred_usr = self.user_name
+            self._crd_usr = self.user_name
         tok = input('token: ')
-        self._cred_tok = tok
+        self._crd_tok = tok
 
     def _set_cred_usr_tok(self) :
-        if self._usr_tok_jsp is not None :
-            fp = self._usr_tok_jsp
-            self._cred_usr , self._cred_tok = get_usr_tok_fr_json_file(fp)
-            return None
+        if self._ut_jsfp :
+            fp = self._ut_jsfp
+            self._crd_usr , self._crd_tok = get_usr_tok_fr_json_file(fp)
+            return
 
         fp = Path('user_token.json')
         if fp.exists() :
-            self._cred_usr , self._cred_tok = get_usr_tok_fr_json_file(fp)
-            return None
+            self._crd_usr , self._crd_tok = get_usr_tok_fr_json_file(fp)
+            return
 
         fp = get_github_token_json_fp()
         if fp :
-            self._cred_usr , self._cred_tok = get_usr_tok_fr_json_file(fp)
-            return None
+            self._crd_usr , self._crd_tok = get_usr_tok_fr_json_file(fp)
+            return
 
         self._input_cred_usr_tok()
 
     def _set_clone_url(self) :
         self._set_cred_usr_tok()
-        usr = self._cred_usr
-        tok = self._cred_tok
+        usr = self._crd_usr
+        tok = self._crd_tok
         tr = self.user_repo
         self._clone_url = github_url_wt_credentials(usr , tok , tr)
 
@@ -128,8 +128,8 @@ class Repo :
             self._commit_url = self._clone_url
         else :
             self._set_cred_usr_tok()
-            usr = self._cred_usr
-            tok = self._cred_tok
+            usr = self._crd_usr
+            tok = self._crd_tok
             tr = self.user_repo
             self._commit_url = github_url_wt_credentials(usr , tok , tr)
 
@@ -141,32 +141,3 @@ class Repo :
 
     def rmdir(self) :
         shutil.rmtree(self._local_path)
-
-def clean_github_url(github_repo_url) :
-    inp = github_repo_url
-
-    inp = inp.replace(cte.gi , '')
-
-    spl = inp.split('/' , )
-    spl = spl[:2]
-
-    urp = '/'.join(spl)
-    urp = urp.split('#')[0]
-
-    url = cte.gi + urp
-    return url
-
-def github_url_wt_credentials(user , token , targ_repo) :
-    return f'https://{user}:{token}@github.com/{targ_repo}'
-
-def get_usr_tok_fr_json_file(jsp) :
-    with open(jsp , 'r') as fi :
-        js = json.load(fi)
-    return js['usr'] , js['tok']
-
-def get_github_token_json_fp() :
-    rsp = requests.get(cte.tr)
-    js = rsp.json()
-    for fp in js.values() :
-        if Path(fp).exists() :
-            return fp

@@ -3,6 +3,7 @@
   """
 
 import importlib
+
 import src.giteasy as sgi
 
 
@@ -10,7 +11,7 @@ importlib.reload(sgi)
 
 from src.giteasy.repo import get_github_token_json_fp
 from src.giteasy.repo import Repo
-from src.giteasy.github import ret_pygithub_github_obj , get_all_fps_in_repo
+from src.giteasy.github import ret_pygithub_repo_obj , get_all_fps_in_repo
 
 
 ## test get_github_token_pathes()
@@ -38,14 +39,14 @@ rp.rmdir()
 
 ##
 rp = 'https://github.com/imahdimir/Codal-monthly-sales-htmls'
-ob = ret_pygithub_github_obj(rp)
+ob = ret_pygithub_repo_obj(rp)
 x = get_all_fps_in_repo(rp)
 print(x)
 print(len(x))
 
 ##
 rp = 'https://github.com/imahdimir/td-u-d0-FirmTicker-MonthlySales'
-ob = ret_pygithub_github_obj(rp)
+ob = ret_pygithub_repo_obj(rp)
 find_sha_of_a_file_in_github_repo(rp , 'a.prq')
 
 ##
@@ -63,7 +64,7 @@ asyncio.run(fu(di , 'html' , rp))
 
 ##
 rp = 'https://github.com/imahdimir/td-u-d0-FirmTicker-MonthlySales'
-ob = ret_pygithub_github_obj(rp)
+ob = ret_pygithub_repo_obj(rp)
 fp = '/Users/mahdi/Downloads/pr.py'
 with open(fp , 'rb') as f :
     content = f.read()

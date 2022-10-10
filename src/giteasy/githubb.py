@@ -2,12 +2,22 @@
 
     """
 
+from dataclasses import dataclass
+from functools import partial
 from pathlib import Path
 
 from github import Github
+from multiprocessing import Pool
+from github.GithubException import GithubException
 
 from .funcs import get_token
 from .repo import Repo
+
+
+@dataclass
+class RRetFpsPyGithubRepoObj :
+    fps: list
+    pygithub_repo_obj: object
 
 
 def ret_usr_repo_from_repo_url(repo_url) :
@@ -168,7 +178,56 @@ def ret_fps_pygithub_repo_inst_for_multiprocess(dirpath ,
         fns = fu1(dirpath , file_suf , rp)
         fps = [_dir / x for x in fns]
 
-    return {
-            'fps'           : fps ,
-            'pygithub.repo' : rp
-            }
+    ro = RRetFpsPyGithubRepoObj
+    return ro(fps = fps , pygithub_repo_obj = rp)
+
+
+def _upload_files_from_dir_2_repo_mp(dirpath ,
+                                     file_suf ,
+                                     repo_url ,
+                                     overwrite = False ,
+                                     n_jobs = 50) :
+    fu = ret_fps_pygithub_repo_inst_for_multiprocess
+    ou = fu(dirpath = dirpath ,
+            file_suf = file_suf ,
+            repo_url = repo_url ,
+            overwrite = overwrite)
+
+    fps = ou.fps
+    print(fps)
+
+    rp = ou.pygithub_repo_obj
+    print(rp)
+
+    pool = Pool(n_jobs)
+
+    fu = partial(_add_overwrite_a_file_2_repo , pygithub_repo_obj = rp)
+
+    pool.map(fu , fps)
+
+    return len(fps)
+
+
+def upload_files_from_dir_2_repo_mp(dirpath ,
+                                    file_suf ,
+                                    repo_url ,
+                                    overwrite = False ,
+                                    n_jobs = 50) :
+    fu = _upload_files_from_dir_2_repo_mp
+    while True :
+
+        try :
+            n = fu(dirpath = dirpath ,
+                   file_suf = file_suf ,
+                   repo_url = repo_url ,
+                   overwrite = overwrite ,
+                   n_jobs = n_jobs)
+            if n == 0 :
+                break
+
+        except GithubException as e :
+            print(e)
+            pass
+
+        except KeyboardInterrupt :
+            break

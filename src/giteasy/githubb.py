@@ -116,7 +116,7 @@ def add_overwrite_a_file_2_repo(fp , repo_url , msg = None , branch = 'main') :
 def _find_new_files_fr_dir_not_in_repo_by_suf(dirpath ,
                                               file_suf ,
                                               pygithub_repo_obj) :
-    fps = list(Path(dirpath).glob(f'*.{file_suf}'))
+    fps = list(Path(dirpath).glob(f'*{file_suf}'))
     print(f'{file_suf} files count in {dirpath}:  {len(fps)}')
 
     rp = pygithub_repo_obj
@@ -125,7 +125,7 @@ def _find_new_files_fr_dir_not_in_repo_by_suf(dirpath ,
     print(f'all files count in {rp.full_name}:  {len(ofns)}')
 
     ofns = [Path(x.path) for x in ofns]
-    ofns = [x.name for x in ofns if x.suffix == f'.{file_suf}']
+    ofns = [x.name for x in ofns if x.suffix == f'{file_suf}']
     print(f'{file_suf} files count in {rp.full_name}:  {len(ofns)}')
 
     fns = [x.name for x in fps]

@@ -4,10 +4,10 @@
 
 from dataclasses import dataclass
 from functools import partial
+from multiprocessing import Pool
 from pathlib import Path
 
 from github import Github
-from multiprocessing import Pool
 from github.GithubException import GithubException
 
 from .funcs import get_token

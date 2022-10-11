@@ -116,7 +116,9 @@ def add_overwrite_a_file_2_repo(fp , repo_url , msg = None , branch = 'main') :
 def _find_new_files_fr_dir_not_in_repo_by_suf(dirpath ,
                                               file_suf ,
                                               pygithub_repo_obj) :
-    fps = list(Path(dirpath).glob(f'*{file_suf}'))
+    pth_ptrn = f'*{file_suf}'
+
+    fps = list(Path(dirpath).glob(pth_ptrn))
     print(f'{file_suf} files count in {dirpath}:  {len(fps)}')
 
     rp = pygithub_repo_obj
@@ -125,7 +127,7 @@ def _find_new_files_fr_dir_not_in_repo_by_suf(dirpath ,
     print(f'all files count in {rp.full_name}:  {len(ofns)}')
 
     ofns = [Path(x.path) for x in ofns]
-    ofns = [x.name for x in ofns if x.suffix == f'{file_suf}']
+    ofns = [x.name for x in ofns if x.match(pth_ptrn)]
     print(f'{file_suf} files count in {rp.full_name}:  {len(ofns)}')
 
     fns = [x.name for x in fps]
@@ -153,7 +155,7 @@ def add_overwrite_files_by_suf_fr_dir_2_repo(dirpath ,
     fu = _add_overwrite_a_file_2_repo
 
     if overwrite :
-        fps = list(_dir.glob(f'*.{file_suf}'))
+        fps = list(_dir.glob(f'*{file_suf}'))
         _ = [fu(x , rp) for x in fps]
     else :
         fu1 = _find_new_files_fr_dir_not_in_repo_by_suf
@@ -162,17 +164,17 @@ def add_overwrite_files_by_suf_fr_dir_2_repo(dirpath ,
         _ = [fu(x , rp) for x in fps]
 
 
-def ret_fps_pygithub_repo_inst_for_multiprocess(dirpath ,
-                                                file_suf ,
-                                                repo_url ,
-                                                overwrite = False) :
+def ret_fps_pygithub_repo_obj(dirpath ,
+                              file_suf ,
+                              repo_url ,
+                              overwrite = False) :
     ur = ret_usr_repo_from_repo_url(repo_url)
     rp = ret_pygithub_repo_obj(ur)
 
     _dir = Path(dirpath)
 
     if overwrite :
-        fps = list(_dir.glob(f'*.{file_suf}'))
+        fps = list(_dir.glob(f'*{file_suf}'))
     else :
         fu1 = _find_new_files_fr_dir_not_in_repo_by_suf
         fns = fu1(dirpath , file_suf , rp)
@@ -182,12 +184,12 @@ def ret_fps_pygithub_repo_inst_for_multiprocess(dirpath ,
     return ro(fps = fps , pygithub_repo_obj = rp)
 
 
-def _upload_files_from_dir_2_repo_mp(dirpath ,
-                                     file_suf ,
-                                     repo_url ,
-                                     overwrite = False ,
-                                     n_jobs = 50) :
-    fu = ret_fps_pygithub_repo_inst_for_multiprocess
+def upload_files_from_dir_2_repo_mp(dirpath ,
+                                    file_suf ,
+                                    repo_url ,
+                                    overwrite = False ,
+                                    n_jobs = 50) :
+    fu = ret_fps_pygithub_repo_obj
     ou = fu(dirpath = dirpath ,
             file_suf = file_suf ,
             repo_url = repo_url ,
@@ -208,12 +210,12 @@ def _upload_files_from_dir_2_repo_mp(dirpath ,
     return len(fps)
 
 
-def upload_files_from_dir_2_repo_mp(dirpath ,
-                                    file_suf ,
-                                    repo_url ,
-                                    overwrite = False ,
-                                    n_jobs = 50) :
-    fu = _upload_files_from_dir_2_repo_mp
+def persistently_upload_files_from_dir_2_repo_mp(dirpath ,
+                                                 file_suf ,
+                                                 repo_url ,
+                                                 overwrite = False ,
+                                                 n_jobs = 50) :
+    fu = upload_files_from_dir_2_repo_mp
     while True :
 
         try :

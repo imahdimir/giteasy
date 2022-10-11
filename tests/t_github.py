@@ -5,7 +5,7 @@
 from pathlib import Path
 
 from src.giteasy.githubb import add_overwrite_a_file_2_repo
-from src.giteasy.githubb import ret_fps_pygithub_repo_inst_for_multiprocess
+from src.giteasy.githubb import ret_fps_pygithub_repo_obj
 from src.giteasy.githubb import ret_pygithub_repo_obj
 
 
@@ -30,7 +30,7 @@ rp = 'https://github.com/imahdimir/td-u-d0-FirmTicker-MonthlySales'
 dp = '/Users/mahdi/Dropbox/1-git-dirs/PyCharm/u-d0-FirmTicker-MonthlySales/link-htmls'
 diir = Path(dp)
 sf = 'html'
-fu = ret_fps_pygithub_repo_inst_for_multiprocess
+fu = ret_fps_pygithub_repo_obj
 fu(diir , sf , rp)
 
 ##

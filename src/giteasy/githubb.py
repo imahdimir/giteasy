@@ -20,7 +20,7 @@ def get_token(github_usr = None) :
     fp = get_github_tok_fp()
     if fp :
         o = get_github_usr_tok_fr_js_file(fp , usr = github_usr)
-        return RGet(usr = o.usr , tok = o.tok)
+        return o.tok
 
     tok = input('enter github access token:')
     return tok

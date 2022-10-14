@@ -9,13 +9,13 @@ import src.giteasy as sgi
 
 importlib.reload(sgi)
 
-from src.giteasy.repo import get_github_token_json_fp
+from src.giteasy.repo import get_github_tok_fp
 from src.giteasy.repo import Repo
 from src.giteasy.githubb import ret_pygithub_repo_obj , get_all_fps_in_repo
 
 
 ## test get_github_token_pathes()
-fp = get_github_token_json_fp()
+fp = get_github_tok_fp()
 print(fp)
 
 ## clone a public repo

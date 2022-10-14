@@ -11,8 +11,8 @@ from dulwich.client import HTTPUnauthorized
 
 from .consts import Consts
 from .funcs import clean_github_url
-from .funcs import get_github_token_json_fp
-from .funcs import get_usr_tok_fr_json_file
+from .funcs import get_github_tok_fp
+from .funcs import get_github_usr_tok_fr_js_file
 from .funcs import github_url_wt_credentials
 
 
@@ -21,25 +21,15 @@ cte = Consts()
 
 class Repo :
 
-    def __init__(self , source_url , usr_tok_json_fp = None) :
-        self.source_url = source_url
-        self._ut_jsfp = usr_tok_json_fp
+    def __init__(self , src_url , github_usr = None , usr_tok_json_fp = None) :
+        self.src_url = src_url
+        self.github_usr = github_usr
+        self.usr_tok_json_fp = usr_tok_json_fp
 
-        self.cln_src_url = clean_github_url(source_url)
+        self.cln_src_url = clean_github_url(src_url)
         self.user_repo = self.cln_src_url.split(cte.gi)[1]
         self.user_name = self.user_repo.split('/')[0]
         self.repo_name = self.user_repo.split('/')[1]
-
-        self._local_path = None
-
-        self._clone_url = None
-
-        self._crd_usr = None
-        self._crd_tok = None
-
-        self._commit_url = None
-
-        self._repo = None
 
         self._init_local_path()
 
@@ -55,7 +45,7 @@ class Repo :
             self._local_path = Path(local_dir)
 
         if self._local_path.exists() :
-            print('Warning: local_path already exists')
+            print(f'WARNING: {self._local_path} already exists')
 
     def _init_local_path(self) :
         self.local_path = None
@@ -75,26 +65,35 @@ class Repo :
         return all_changes
 
     def _input_cred_usr_tok(self) :
-        usr = input('(enter nothing for same as repo source) github username: ')
-        if usr.strip() == '' :
-            self._crd_usr = self.user_name
+        if not self.github_usr :
+            msg = '(enter nothing for same as repo source) github username: '
+            self.github_usr = input(msg)
+            if self.github_usr.strip() == '' :
+                self._crd_usr = self.user_name
+        else :
+            self._crd_usr = self.github_usr
+
         tok = input('token: ')
         self._crd_tok = tok
 
+    def _set_cred_usr_tok_fr_file(self , fp , github_usr = None) :
+        o = get_github_usr_tok_fr_js_file(fp , usr = github_usr)
+        self._crd_usr , self._crd_tok = o.usr , o.tok
+
     def _set_cred_usr_tok(self) :
-        if self._ut_jsfp :
-            fp = self._ut_jsfp
-            self._crd_usr , self._crd_tok = get_usr_tok_fr_json_file(fp)
-            return
-
-        fp = Path('user_token.json')
-        if fp.exists() :
-            self._crd_usr , self._crd_tok = get_usr_tok_fr_json_file(fp)
-            return
-
-        fp = get_github_token_json_fp()
+        fp = self.usr_tok_json_fp
         if fp :
-            self._crd_usr , self._crd_tok = get_usr_tok_fr_json_file(fp)
+            self._set_cred_usr_tok_fr_file(fp , github_usr = self.github_usr)
+            return
+
+        fp = Path('tok.json')
+        if fp.exists() :
+            self._set_cred_usr_tok_fr_file(fp)
+            return
+
+        fp = get_github_tok_fp()
+        if fp :
+            self._set_cred_usr_tok_fr_file(fp , github_usr = self.github_usr)
             return
 
         self._input_cred_usr_tok()
@@ -120,13 +119,14 @@ class Repo :
             self._clone_url = self.cln_src_url
             url = self._clone_url
             self._repo = porcelain.clone(url , trgdir , depth = depth)
+
         except HTTPUnauthorized :
             self._set_clone_url()
             url = self._clone_url
             self._repo = porcelain.clone(url , trgdir , depth = depth)
 
     def _set_commit_url(self) :
-        if self._clone_url != self.cln_src_url :
+        if not self._clone_url == self.cln_src_url :
             self._commit_url = self._clone_url
         else :
             self._set_cred_usr_tok()

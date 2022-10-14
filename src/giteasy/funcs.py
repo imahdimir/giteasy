@@ -3,6 +3,7 @@
     """
 
 import json
+from dataclasses import dataclass
 from pathlib import Path
 
 import requests
@@ -32,24 +33,36 @@ def github_url_wt_credentials(user , token , targ_repo) :
     return f'https://{user}:{token}@github.com/{targ_repo}'
 
 
-def get_usr_tok_fr_json_file(jsp) :
-    with open(jsp , 'r') as fi :
-        js = json.load(fi)
-    return js['usr'] , js['tok']
-
-
-def get_github_token_json_fp() :
-    rsp = requests.get(cte.tr)
+def get_github_tok_fp() :
+    tr = 'https://raw.github.com/imahdimir/tok/main/github.json'
+    rsp = requests.get(tr)
     js = rsp.json()
     for fp in js.values() :
         if Path(fp).exists() :
             return fp
 
 
+@dataclass
+class RGet :
+    usr: str
+    tok: str
+
+
+def get_github_usr_tok_fr_js_file(jsp , usr = None) :
+    with open(jsp , 'r') as fi :
+        js = json.load(fi)
+
+    if usr :
+        return RGet(usr = usr , tok = js[usr])
+
+    return RGet(usr = list(js.keys())[0] , tok = list(js.values())[0])
+
+
 def get_token() :
-    fp = get_github_token_json_fp()
+    fp = get_github_tok_fp()
     if fp :
-        _ , tok = get_usr_tok_fr_json_file(fp)
-    else :
-        tok = input('enter github access token:')
+        o = get_github_usr_tok_fr_js_file(fp)
+        return RGet(usr = o.usr , tok = o.tok)
+
+    tok = input('enter github access token:')
     return tok

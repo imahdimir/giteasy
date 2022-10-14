@@ -10,14 +10,20 @@ from pathlib import Path
 from github import Github
 from github.GithubException import GithubException
 
-from .funcs import get_token
+from .funcs import get_github_tok_fp
+from .funcs import get_github_usr_tok_fr_js_file
+from .funcs import RGet
 from .repo import Repo
 
 
-@dataclass
-class RRetFpsPyGithubRepoObj :
-    fps: list
-    pygithub_repo_obj: object
+def get_token(github_usr = None) :
+    fp = get_github_tok_fp()
+    if fp :
+        o = get_github_usr_tok_fr_js_file(fp , usr = github_usr)
+        return RGet(usr = o.usr , tok = o.tok)
+
+    tok = input('enter github access token:')
+    return tok
 
 
 def ret_usr_repo_from_repo_url(repo_url) :
@@ -26,10 +32,10 @@ def ret_usr_repo_from_repo_url(repo_url) :
     return rp.user_repo
 
 
-def ret_pygithub_repo_obj(usr_repo , tok = None) :
+def ret_pygithub_repo_obj(usr_repo , tok = None , github_usr = None) :
     """ Return a PyGitHub repo object. """
     if not tok :
-        tok = get_token()
+        tok = get_token(github_usr = github_usr)
     g = Github(tok)
     return g.get_repo(usr_repo)
 
@@ -164,12 +170,19 @@ def add_overwrite_files_by_suf_fr_dir_2_repo(dirpath ,
         _ = [fu(x , rp) for x in fps]
 
 
-def ret_fps_pygithub_repo_obj(dirpath ,
-                              file_suf ,
-                              repo_url ,
-                              overwrite = False) :
+@dataclass
+class RRetFpsPyGithubRepoObj :
+    fps: list
+    pygithub_repo_obj: object
+
+
+def ret_fps_and_pygithub_repo_obj(dirpath ,
+                                  file_suf ,
+                                  repo_url ,
+                                  github_usr = None ,
+                                  overwrite = False) :
     ur = ret_usr_repo_from_repo_url(repo_url)
-    rp = ret_pygithub_repo_obj(ur)
+    rp = ret_pygithub_repo_obj(ur , github_usr = github_usr)
 
     _dir = Path(dirpath)
 
@@ -184,15 +197,17 @@ def ret_fps_pygithub_repo_obj(dirpath ,
     return ro(fps = fps , pygithub_repo_obj = rp)
 
 
-def upload_files_from_dir_2_repo_mp(dirpath ,
-                                    file_suf ,
-                                    repo_url ,
-                                    overwrite = False ,
-                                    n_jobs = 50) :
-    fu = ret_fps_pygithub_repo_obj
+def upload_files_by_suf_from_dir_2_repo_mp(dirpath ,
+                                           file_suf ,
+                                           repo_url ,
+                                           github_usr = None ,
+                                           overwrite = False ,
+                                           n_jobs = 50) :
+    fu = ret_fps_and_pygithub_repo_obj
     ou = fu(dirpath = dirpath ,
             file_suf = file_suf ,
             repo_url = repo_url ,
+            github_usr = github_usr ,
             overwrite = overwrite)
 
     fps = ou.fps
@@ -213,15 +228,17 @@ def upload_files_from_dir_2_repo_mp(dirpath ,
 def persistently_upload_files_from_dir_2_repo_mp(dirpath ,
                                                  file_suf ,
                                                  repo_url ,
+                                                 github_usr = None ,
                                                  overwrite = False ,
                                                  n_jobs = 50) :
-    fu = upload_files_from_dir_2_repo_mp
+    fu = upload_files_by_suf_from_dir_2_repo_mp
     while True :
 
         try :
             n = fu(dirpath = dirpath ,
                    file_suf = file_suf ,
                    repo_url = repo_url ,
+                   github_usr = github_usr ,
                    overwrite = overwrite ,
                    n_jobs = n_jobs)
             if n == 0 :

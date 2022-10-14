@@ -56,13 +56,3 @@ def get_github_usr_tok_fr_js_file(jsp , usr = None) :
         return RGet(usr = usr , tok = js[usr])
 
     return RGet(usr = list(js.keys())[0] , tok = list(js.values())[0])
-
-
-def get_token() :
-    fp = get_github_tok_fp()
-    if fp :
-        o = get_github_usr_tok_fr_js_file(fp)
-        return RGet(usr = o.usr , tok = o.tok)
-
-    tok = input('enter github access token:')
-    return tok

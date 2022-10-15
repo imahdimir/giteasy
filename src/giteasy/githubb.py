@@ -12,7 +12,6 @@ from github.GithubException import GithubException
 
 from .funcs import get_github_tok_fp
 from .funcs import get_github_usr_tok_fr_js_file
-from .funcs import RGet
 from .repo import Repo
 
 
@@ -32,11 +31,17 @@ def ret_usr_repo_from_repo_url(repo_url) :
     return rp.user_repo
 
 
-def ret_pygithub_repo_obj(usr_repo , tok = None , github_usr = None) :
-    """ Return a PyGitHub repo object. """
+def ret_pygithub_github_obj(tok = None , github_usr = None) :
+    """ Return a PyGitHub GitHub object. """
     if not tok :
         tok = get_token(github_usr = github_usr)
     g = Github(tok)
+    return g
+
+
+def ret_pygithub_repo_obj(usr_repo , tok = None , github_usr = None) :
+    """ Return a PyGitHub repo object. """
+    g = ret_pygithub_github_obj(tok , github_usr)
     return g.get_repo(usr_repo)
 
 
@@ -250,3 +255,9 @@ def persistently_upload_files_from_dir_2_repo_mp(dirpath ,
 
         except KeyboardInterrupt :
             break
+
+
+def get_github_rate_limit(tok = None , github_usr = None) :
+    """ Get the GitHub API rate limit. """
+    gh = ret_pygithub_github_obj(tok = tok , github_usr = github_usr)
+    return gh.get_rate_limit()

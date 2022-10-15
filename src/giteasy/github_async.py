@@ -13,7 +13,7 @@ import pandas as pd
 import ujson
 from gidgethub.aiohttp import GitHubAPI
 
-from .funcs import get_token
+from .githubb import get_token
 from .githubb import _get_all_fps_in_repo
 from .githubb import ret_pygithub_repo_obj
 from .githubb import ret_usr_repo_from_repo_url
@@ -108,8 +108,9 @@ def find_sha_of_files(fps , usr_repo , tok) :
     return df
 
 
-async def get_rare_limit(requester = 'imahdimir') :
+async def get_rare_limit(github_usr = 'imahdimir') :
+    tok = get_token(github_usr)
     async with aiohttp.ClientSession() as session :
-        gh = GitHubAPI(session , requester , oauth_token = get_token())
+        gh = GitHubAPI(session , github_usr , oauth_token = tok)
         data = await gh.getitem("/rate_limit")
         print(data)

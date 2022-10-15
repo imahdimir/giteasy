@@ -4,9 +4,7 @@
 
 from pathlib import Path
 
-from src.giteasy.githubb import add_overwrite_a_file_2_repo
-from src.giteasy.githubb import ret_fps_and_pygithub_repo_obj
-from src.giteasy.githubb import ret_pygithub_repo_obj
+from src.giteasy.githubb import *
 
 
 ##
@@ -32,5 +30,8 @@ diir = Path(dp)
 sf = 'html'
 fu = ret_fps_and_pygithub_repo_obj
 fu(diir , sf , rp)
+
+##
+get_github_rate_limit(github_usr = 'imahdimir')
 
 ##

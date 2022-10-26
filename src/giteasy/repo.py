@@ -140,6 +140,7 @@ class Repo :
         self._stage_all_changes()
         self._repo.do_commit(message.encode())
         porcelain.push(str(self._local_path) , self._commit_url , branch)
+        print(message)
 
     def rmdir(self) :
         shutil.rmtree(self._local_path)

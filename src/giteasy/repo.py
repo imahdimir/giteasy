@@ -126,11 +126,10 @@ class Repo :
             self._repo = porcelain.clone(url , trgdir , depth = depth)
 
     def _set_commit_url(self) :
-        if not hasattr(self , '_clone_url') :
-            self._clone_url = None
 
         if not self._clone_url == self.cln_src_url :
             self._commit_url = self._clone_url
+
         else :
             self._set_cred_usr_tok()
             usr = self._crd_usr

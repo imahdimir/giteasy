@@ -1,1 +1,1 @@
-from .github_repo import GithubRepo
+from .github_repo import GitHubRepo

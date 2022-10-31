@@ -2,8 +2,6 @@
 
   """
 
-from pathlib import Path
-
 from src.giteasy.githubb import *
 
 

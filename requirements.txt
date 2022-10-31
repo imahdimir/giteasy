@@ -1,5 +1,0 @@
-dulwich
-pip
-build
-twine
-IPython

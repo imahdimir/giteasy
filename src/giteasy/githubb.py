@@ -9,30 +9,21 @@ from pathlib import Path
 
 from github import Github
 from github.GithubException import GithubException
+from mirutil.files import read_file as rf
+from mirutil.tok import get_token as gt
 
-from .funcs import get_github_tok_fp
-from .funcs import get_github_usr_tok_fr_js_file
-from .repo import Repo
+from .github_repo import GitHubRepo
 
-
-def get_token(github_usr = None) :
-    fp = get_github_tok_fp()
-    if fp :
-        o = get_github_usr_tok_fr_js_file(fp , usr = github_usr)
-        return o.tok
-
-    tok = input('enter github access token:')
-    return tok
 
 def ret_usr_repo_from_repo_url(repo_url) :
     """ Return the user/repo name from a GitHub repository URL. """
-    rp = Repo(repo_url)
-    return rp.user_repo
+    rp = GitHubRepo(repo_url)
+    return rp.usr_repo
 
 def ret_pygithub_github_obj(tok = None , github_usr = None) :
     """ Return a PyGitHub GitHub object. """
-    if not tok :
-        tok = get_token(github_usr = github_usr)
+    if tok is None :
+        tok = gt(key = github_usr)
     g = Github(tok)
     return g
 
@@ -77,8 +68,7 @@ def _add_overwrite_a_file_2_repo(fp ,
     rp = pygithub_repo_obj
     fn = Path(fp).name
 
-    with open(fp , 'rb') as f :
-        cnt = f.read()
+    cnt = rf(fp , mode = 'rb')
 
     sha = _find_file_sha(rp , fn)
 

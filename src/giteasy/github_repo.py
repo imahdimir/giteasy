@@ -118,7 +118,7 @@ class GitHubRepo :
         print(commit_msg)
 
     def rmdir(self) :
-        if self.local_path.exists() :
+        if (self.local_path.exists()) and (self.local_path != Path.cwd()) :
             shutil.rmtree(self.local_path)
 
 def ret_github_url_wt_credentials(user , token , targ_usr , targ_repo) :

@@ -58,7 +58,7 @@ class GitHubRepo :
         dirr = self.local_path
 
         try :
-            self.repo = porcelain.clone(self.u , dirr , depth = depth)
+            self.repo = porcelain.clone(str(self.u) , dirr , depth = depth)
 
         except HTTPUnauthorized :
             self._set_cred_url()

@@ -34,14 +34,14 @@ class GitHubRepo :
         self.repo_name = self.u.path_segment(1)
         self.usr_repo = self.usr + '/' + self.repo_name
 
-        self._resolve_local_path()
-
         # noinspection PyTypeChecker
         self.repo: DulwichRepo = None
 
         self.cred_usr = None
         self.cred_tok = None
         self.cred_url = None
+
+        self._resolve_local_path()
 
     def _resolve_local_path(self) :
         if self.local_path is None :
@@ -88,7 +88,7 @@ class GitHubRepo :
 
     def _set_cred_usr_tok_fr_file(self , fp , github_usr = None) :
         o = gvkfj(fp , key = github_usr)
-        self.cred_usr , self.cred_tok = o.usr , o.tok
+        self.cred_usr , self.cred_tok = o.key , o.val
 
     def _stage_all_changes(self) :
         idx = self.repo.open_index()

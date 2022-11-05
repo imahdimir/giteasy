@@ -20,16 +20,3 @@ url
 ##
 fp = download_latest_release_tarball_of_a_public_github_repo(rp)
 fp
-
-##
-import tarfile
-
-
-with tarfile.open(fp) as f :
-    f.extractall(fp.parent)
-
-##
-download_latest_release_of_public_github_repo(rp)
-
-##
-##

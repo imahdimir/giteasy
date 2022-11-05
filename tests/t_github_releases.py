@@ -20,3 +20,33 @@ url
 ##
 fp = download_latest_release_tarball_of_a_public_github_repo(rp)
 fp
+
+##
+from mirutil.files import untar_to
+import tarfile
+
+
+with tarfile.open(fp) as tar :
+    print(tar.getnames())
+
+##
+def get_folname_fr_github_tarball(fp) :
+    with tarfile.open(fp) as tar :
+        return tar.getnames()[0]
+
+get_folname_fr_github_tarball(fp)
+
+##
+fp = download_latest_release_of_public_github_repo(rp)
+
+##
+import subprocess
+
+
+##
+subprocess.run(['cd' , str(fp)])
+
+##
+subprocess.run(['ls'])
+
+##

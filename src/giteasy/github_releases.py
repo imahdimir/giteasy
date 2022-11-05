@@ -7,6 +7,7 @@ from pathlib import Path
 
 import requests
 from mirutil.files import write_to_file
+from mirutil.files import untar_to
 
 from .github_repo import GitHubRepo
 
@@ -41,3 +42,13 @@ def download_latest_release_tarball_of_a_public_github_repo(repo_url ,
     write_to_file(r.content , fp , 'wb')
 
     return fp
+
+def download_latest_release_of_public_github_repo(repo_url ,
+                                                  local_path = None) :
+    tar_fp = download_latest_release_tarball_of_a_public_github_repo(repo_url ,
+                                                                     local_path)
+    untar_to(tar_fp , tar_fp.parent)
+    tar_fp.unlink()
+    dirn = tar_fp.name.split('.tar.gz')[0]
+    dirp = tar_fp.parent / dirn
+    return dirp

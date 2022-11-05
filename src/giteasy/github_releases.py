@@ -3,8 +3,10 @@
     """
 
 import re
+from pathlib import Path
 
 import requests
+from mirutil.files import write_to_file
 
 from .github_repo import GitHubRepo
 
@@ -22,3 +24,14 @@ def get_filename_fr_github_resp(r) :
     pat = 'attachment; filename=(.+)'
     mat = re.findall(pat , cd)
     return mat[0]
+
+def download_latest_release_tarball_of_a_public_github_repo(repo_url ,
+                                                            local_path) :
+    url = get_tar_url_of_latest_release_of_a_public_github_repo(repo_url)
+    r = requests.get(url)
+    if r.status_code != 200 :
+        return
+    fn = get_filename_fr_github_resp(r)
+    fp = Path(local_path) / fn
+    write_to_file(r.content , fp , 'wb')
+    return fp

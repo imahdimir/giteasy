@@ -26,12 +26,18 @@ def get_filename_fr_github_resp(r) :
     return mat[0]
 
 def download_latest_release_tarball_of_a_public_github_repo(repo_url ,
-                                                            local_path) :
+                                                            local_path = None) :
     url = get_tar_url_of_latest_release_of_a_public_github_repo(repo_url)
+
     r = requests.get(url)
     if r.status_code != 200 :
         return
+
     fn = get_filename_fr_github_resp(r)
+    if local_path is None :
+        local_path = Path.cwd()
     fp = Path(local_path) / fn
+
     write_to_file(r.content , fp , 'wb')
+
     return fp

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "giteasy"
-version = "9.5.0"
+version = "10.0.0"
 authors = [{ name = "Mahdi Mir", email = "imahdimir@gmail.com" }]
 description = "A simple tool to get last/full version of a github repository and committing back to it"
 readme = "README.md"
@@ -14,6 +14,7 @@ dependencies = [
     "PyGithub",
     "mirutil",
     "purl~=1.6",
+    "mtok"
 ]
 classifiers = [
     "Programming Language :: Python :: 3",

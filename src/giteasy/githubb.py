@@ -10,7 +10,7 @@ from pathlib import Path
 from github import Github
 from github.GithubException import GithubException
 from mirutil.files import read_file as rf
-from mirutil.tok import get_token as gt
+from mtok import get_token as gettok
 
 from .github_repo import GitHubRepo
 
@@ -23,7 +23,7 @@ def ret_usr_repo_from_repo_url(repo_url) :
 def ret_pygithub_github_obj(tok = None , github_usr = None) :
     """ Return a PyGitHub GitHub object. """
     if tok is None :
-        tok = gt(key = github_usr)
+        tok = gettok(github_usr)
     g = Github(tok)
     return g
 

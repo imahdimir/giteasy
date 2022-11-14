@@ -60,7 +60,7 @@ class GitHubRepo :
         self.cred_url = ret_github_url_wt_credentials(self.cred_usr ,
                                                       self.cred_tok ,
                                                       self.usr ,
-                                                      self.repo)
+                                                      self.repo_name)
 
     def _stage_all_changes(self) :
         idx = self.repo.open_index()

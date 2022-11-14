@@ -38,7 +38,6 @@ class GitHubRepo :
         self.cred_tok = None
         self.cred_url = None
 
-    def __post_init__(self) :
         self._resolve_local_path()
 
     def _resolve_local_path(self) :

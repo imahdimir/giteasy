@@ -51,9 +51,9 @@ class GitHubRepo :
             self.cred_usr , self.cred_tok = cu , tok
             return
         if cu is not None :
-            self.cred_usr , self.cred_tok = gettoken(cu)
+            self.cred_usr , self.cred_tok = cu , gettoken(cu)
             return
-        self.cred_usr , self.cred_tok = gettoken(self.usr)
+        self.cred_usr , self.cred_tok = self.usr , gettoken(self.usr)
 
     def _set_cred_url(self) :
         self._set_cred_usr_tok()

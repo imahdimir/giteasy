@@ -26,7 +26,8 @@ class GitHubRepo :
         self.committing_usr = committing_usr
         self.token = token
 
-        self.u = URL.from_string(repo_url)
+        self.u = resolve_github_url(repo_url)
+        self.u = URL.from_string(self.u)
 
         self.usr = self.u.path_segment(0)
         self.repo_name = self.u.path_segment(1)
@@ -101,3 +102,8 @@ class GitHubRepo :
 
 def ret_github_url_wt_credentials(user , token , targ_usr , targ_repo) :
     return f'https://{user}:{token}@github.com/{targ_usr}/{targ_repo}'
+
+def resolve_github_url(url) :
+    if url.startswith(gbu) :
+        return url
+    return gbu + url

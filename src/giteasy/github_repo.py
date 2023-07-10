@@ -19,7 +19,7 @@ class GitHubRepo :
     def __init__(self ,
                  repo_url: str ,
                  local_path = None ,
-                 containing_dir = Path('GitHubData/') ,
+                 containing_dir = None ,
                  committing_usr: (str , None) = None ,
                  token: (str , None) = None
                  ) :
@@ -49,6 +49,8 @@ class GitHubRepo :
             return
 
         elif self.containing_dir is not None :
+            self.containing_dir = Path(self.containing_dir)
+
             if not self.containing_dir.exists() :
                 self.containing_dir.mkdir()
 

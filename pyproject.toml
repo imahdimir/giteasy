@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "giteasy"
-version = "10.2.0"
+version = "10.2.1"
 authors = [{ name = "Mahdi Mir", email = "imahdimir@gmail.com" }]
 description = "A simple tool to get last/full version of a github repository and committing back to it"
 readme = "README.md"

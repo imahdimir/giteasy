@@ -1,9 +1,4 @@
-"""
-
-  """
-
 from src.giteasy.githubb import *
-
 
 ##
 rp = 'https://github.com/imahdimir/td-u-d0-FirmTicker-MonthlySales'

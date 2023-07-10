@@ -12,7 +12,6 @@ from dulwich.repo import Repo as DulwichRepo
 from mtok import get_token as gettoken
 from purl import URL
 
-
 gbu = 'https://github.com/'
 
 class GitHubRepo :
@@ -20,9 +19,13 @@ class GitHubRepo :
     def __init__(self ,
                  repo_url: str ,
                  local_path = None ,
+                 containing_dir = Path('GitHubData/') ,
                  committing_usr: (str , None) = None ,
-                 token: (str , None) = None) :
+                 token: (str , None) = None
+                 ) :
+
         self.local_path = local_path
+        self.containing_dir = containing_dir
         self.committing_usr = committing_usr
         self.token = token
 
@@ -42,7 +45,16 @@ class GitHubRepo :
         self._resolve_local_path()
 
     def _resolve_local_path(self) :
-        if self.local_path is None :
+        if self.local_path is not None :
+            return
+
+        elif self.containing_dir is not None :
+            if not self.containing_dir.exists() :
+                self.containing_dir.mkdir()
+
+            self.local_path = Path(self.containing_dir) / self.repo_name
+
+        elif self.containing_dir is None :
             self.local_path = Path(self.repo_name)
 
     def _set_cred_usr_tok(self) :

@@ -9,7 +9,7 @@ from dulwich import index
 from dulwich import porcelain
 from dulwich.client import HTTPUnauthorized
 from dulwich.repo import Repo as DulwichRepo
-from mtok import get_token as gettoken
+from mtok import get_token
 from purl import URL
 
 gbu = 'https://github.com/'
@@ -62,13 +62,13 @@ class GitHubRepo :
     def _set_cred_usr_tok(self) :
         cu = self.committing_usr
         tok = self.token
+
         if (cu is not None) and (tok is not None) :
             self.cred_usr , self.cred_tok = cu , tok
-            return
-        if cu is not None :
-            self.cred_usr , self.cred_tok = cu , gettoken(cu)
-            return
-        self.cred_usr , self.cred_tok = self.usr , gettoken(self.usr)
+        elif cu is not None :
+            self.cred_usr , self.cred_tok = cu , get_token(cu)
+        else :
+            self.cred_usr , self.cred_tok = self.usr , get_token(self.usr)
 
     def _set_cred_url(self) :
         self._set_cred_usr_tok()
